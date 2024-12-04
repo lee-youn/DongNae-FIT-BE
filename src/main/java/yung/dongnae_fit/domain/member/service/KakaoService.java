@@ -135,6 +135,8 @@ public class KakaoService {
                     .refreshToken(token.getRefreshToken())
                     .build();
             memberRepository.save(member);
+        } else {
+            member.setRefreshToken(token.getRefreshToken());
         }
         //토큰 생성
         return new LoginResponse(kakaoId,token);

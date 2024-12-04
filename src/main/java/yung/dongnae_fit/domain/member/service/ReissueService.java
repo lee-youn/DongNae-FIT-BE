@@ -28,13 +28,11 @@ public class ReissueService {
 
     @Transactional
     public AuthTokens ReissueToken(String token) {
-        if (!jwtTokenProvider.validateToken(token)){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid refresh token");
+        if (jwtTokenProvider.validateToken(token)==null){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "유효하지 않은 리프레쉬 토큰입니다.");
         }
-//        Long kakaoId = Long.valueOf(jwtTokenProvider.getSubjectFromToken(token));
-//        System.out.println(kakaoId);
         Member member = memberRepository.findByRefreshToken(token)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 회원이 존재하지 않습니다."));
 
         Long kakaoId = member.getKakaoId();
 

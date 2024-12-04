@@ -7,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -32,14 +34,15 @@ public class JwtTokenProvider {
 
     // Token 유효성 검사 : 유효기간이 지났는지 확인
     @Transactional
-    public boolean validateToken(String token) {
+    public Jws<Claims> validateToken(String token) {
         System.out.printf(token);
+        Jws<Claims> claimsJws = null;
+
         try {
-            Jws<Claims> claimsJws = Jwts.parserBuilder()
+            claimsJws = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
-            System.out.printf("여기도 됨?");
 
             // 만료 시간 확인
             Date expiration = claimsJws.getBody().getExpiration();  // exp 클레임
@@ -47,13 +50,14 @@ public class JwtTokenProvider {
 
             // 만약 만료 시간이 현재 시간보다 이전이면 false 반환
             if (expiration.before(now)) {
-                return false; // 토큰 만료됨
+                new ResponseStatusException(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다.");
+                return claimsJws; // 토큰 만료됨
             }
 
-            return true; // 유효한 토큰
+            return claimsJws; // 유효한 토큰
         } catch (io.jsonwebtoken.JwtException | IllegalArgumentException e) {
             System.err.println("토큰 유효성 검사 오류: " + e.getMessage());
-            return false; // 유효하지 않은 토큰
+            return claimsJws; // 유효하지 않은 토큰
         }
     }
 
