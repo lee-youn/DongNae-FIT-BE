@@ -15,16 +15,26 @@ public class Member {
 
     private String profile;
 
-    private String nickname;
+    private String name;
 
     private String region;
 
-    private Long kakaoId;
+    private String province;
+
+    private String district;
+
+    private String latitude;
+
+    private String longitude;
+
+    private String kakaoId;
+
+    private String profileImage;
 
     private String refreshToken;
 
     @Builder
-    public Member(Long kakaoId, String refreshToken) {
+    public Member(String kakaoId, String refreshToken) {
         this.kakaoId = kakaoId;
         this.refreshToken = refreshToken;
     }

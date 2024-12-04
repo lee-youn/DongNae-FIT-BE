@@ -6,10 +6,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class LoginResponse {
-    private Long id;
+    private String id;
     private AuthTokens token;
 
-    public LoginResponse(Long id, AuthTokens token) {
+    public LoginResponse(String id, AuthTokens token) {
         this.id = id;
         this.token = token;
     }

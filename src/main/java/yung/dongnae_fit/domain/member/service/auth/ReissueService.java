@@ -1,4 +1,4 @@
-package yung.dongnae_fit.domain.member.service;
+package yung.dongnae_fit.domain.member.service.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,7 +34,7 @@ public class ReissueService {
         Member member = memberRepository.findByRefreshToken(token)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 회원이 존재하지 않습니다."));
 
-        Long kakaoId = member.getKakaoId();
+        String kakaoId = member.getKakaoId();
 
         long now = (new Date()).getTime();
         Date accessTokenExpiredAt = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);

@@ -1,41 +1,42 @@
-package yung.dongnae_fit.domain.member.service;
+package yung.dongnae_fit.domain.member.service.auth;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.Key;
 import java.util.Date;
-import java.util.Map;
-import java.util.logging.Logger;
 
 @RequiredArgsConstructor
 @Service
+@Log4j2
 public class JwtTokenProvider {
 
-    private final SecretKey key;
+    private SecretKey key;
 
-    public JwtTokenProvider() {
-        String secretKey = "aasdlaksfjlaksfjklasjfklasjfklasjfkatympasfkajflkasfakslfjaklsfasfa";
+    @Value("${jwt.secretKey}")
+    private String secretKey;
+
+    @PostConstruct
+    public void init() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512);  // Corrected this line
+        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     }
 
     // Token 유효성 검사 : 유효기간이 지났는지 확인
     @Transactional
     public Jws<Claims> validateToken(String token) {
-        System.out.printf(token);
+        System.out.println("토큰 검증 시작: " + token);
+
         Jws<Claims> claimsJws = null;
 
         try {
@@ -48,16 +49,15 @@ public class JwtTokenProvider {
             Date expiration = claimsJws.getBody().getExpiration();  // exp 클레임
             Date now = new Date();  // 현재 시간
 
-            // 만약 만료 시간이 현재 시간보다 이전이면 false 반환
+            // 만약 만료 시간이 현재 시간보다 이전이면 예외를 던짐
             if (expiration.before(now)) {
-                new ResponseStatusException(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다.");
-                return claimsJws; // 토큰 만료됨
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다.");
             }
 
             return claimsJws; // 유효한 토큰
         } catch (io.jsonwebtoken.JwtException | IllegalArgumentException e) {
             System.err.println("토큰 유효성 검사 오류: " + e.getMessage());
-            return claimsJws; // 유효하지 않은 토큰
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다.");
         }
     }
 

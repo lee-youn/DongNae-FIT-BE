@@ -1,4 +1,4 @@
-package yung.dongnae_fit.domain.member.service;
+package yung.dongnae_fit.domain.member.service.auth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -37,6 +37,8 @@ public class KakaoService {
 
 
     public LoginResponse KakaoLogin(String code) {
+
+        System.out.print("여기서 옴?");
 
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getAccessToken(code);
@@ -124,7 +126,7 @@ public class KakaoService {
 
     private LoginResponse kakaoUserLogin(HashMap<String, Object> userInfo){
 
-        Long kakaoId= Long.valueOf(userInfo.get("id").toString());
+        String kakaoId= String.valueOf(userInfo.get("id"));
 
         Member member = memberRepository.findByKakaoId(kakaoId).orElse(null);
         AuthTokens token= authTokensGenerator.generate(kakaoId.toString());

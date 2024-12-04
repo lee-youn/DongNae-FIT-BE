@@ -10,7 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.server.ResponseStatusException;
-import yung.dongnae_fit.domain.member.service.JwtTokenProvider;
+import yung.dongnae_fit.domain.member.service.auth.JwtTokenProvider;
+import yung.dongnae_fit.global.RequestScopedStorage;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -30,7 +31,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
         log.info("requestURI: " + requestURI);
 
-        String[] excludePath = {"/api/member", "/swagger-ui", "/v3/api-docs"};
+        String[] excludePath = {"/member/kakao","/member/refresh", "/swagger-ui", "/v3/api-docs"};
 
         return Arrays.stream(excludePath).anyMatch(requestURI::startsWith);
     }
@@ -55,7 +56,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             Map<String, Object> claims = jwtTokenProvider.validateToken(accessToken).getBody();
             log.info("Token validation completed. Claims: " + claims);
 
-            String kakaoId = (String) claims.get("kakaoId");
+            String kakaoId = (String) claims.get("sub");
             requestScopedStorage.setKakaoId(kakaoId);
 
             log.info("Parsed Claims: kakaoId=" + kakaoId);

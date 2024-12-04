@@ -1,4 +1,4 @@
-package yung.dongnae_fit.global.security.config;
+package yung.dongnae_fit.global;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;

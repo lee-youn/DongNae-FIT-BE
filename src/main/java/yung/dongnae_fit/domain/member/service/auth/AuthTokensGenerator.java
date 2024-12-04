@@ -1,8 +1,7 @@
-package yung.dongnae_fit.domain.member.service;
+package yung.dongnae_fit.domain.member.service.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import yung.dongnae_fit.domain.member.dto.AuthTokens;
 
