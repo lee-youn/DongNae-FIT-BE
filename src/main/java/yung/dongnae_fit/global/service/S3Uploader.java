@@ -39,4 +39,13 @@ public class S3Uploader {
             throw new IOException("Failed to upload file to S3", e);
         }
     }
+
+    public void delete(String filePath) throws IOException {
+        try {
+            amazonS3.deleteObject(bucketName, filePath);
+        } catch (AmazonServiceException e) {
+            e.printStackTrace();
+            throw new IOException("Failed to delete file from S3", e);
+        }
+    }
 }

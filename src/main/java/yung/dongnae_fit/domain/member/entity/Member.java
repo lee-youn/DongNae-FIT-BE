@@ -2,6 +2,11 @@ package yung.dongnae_fit.domain.member.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import yung.dongnae_fit.domain.memberComment.entity.MemberComment;
+import yung.dongnae_fit.domain.post.entity.Post;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,6 +37,10 @@ public class Member {
     private String profileImage;
 
     private String refreshToken;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<MemberComment> memberComment = new ArrayList<>();
+
 
     @Builder
     public Member(String kakaoId, String refreshToken) {
