@@ -25,8 +25,8 @@ public class ProgramFacility {
     private String province;
     private String district;
     private String addr;
-    private String latitude;
-    private String longitude;
+    private Double latitude;
+    private Double longitude;
     private String image;
 
     @OneToMany(mappedBy = "programFacility")

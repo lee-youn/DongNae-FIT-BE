@@ -23,9 +23,9 @@ public class Member {
 
     private String district;
 
-    private String latitude;
+    private Double latitude;
 
-    private String longitude;
+    private Double longitude;
 
     private String kakaoId;
 

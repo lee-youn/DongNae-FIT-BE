@@ -13,11 +13,11 @@ public class MypageRegionDTO {
     private String region;
     private String province;
     private String district;
-    private String latitude;
-    private String longitude;
+    private Double latitude;
+    private Double longitude;
 
     @Builder
-    public MypageRegionDTO(String region, String province, String district, String latitude, String longitude) {
+    public MypageRegionDTO(String region, String province, String district, Double latitude, Double longitude) {
         this.region = region;
         this.province = province;
         this.district = district;
