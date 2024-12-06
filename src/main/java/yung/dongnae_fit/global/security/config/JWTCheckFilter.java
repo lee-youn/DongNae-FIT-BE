@@ -58,6 +58,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
             String kakaoId = (String) claims.get("sub");
             requestScopedStorage.setKakaoId(kakaoId);
+            System.out.println(requestScopedStorage.getKakaoId());
 
             log.info("Parsed Claims: kakaoId=" + kakaoId);
 

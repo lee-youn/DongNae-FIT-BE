@@ -18,6 +18,7 @@ import yung.dongnae_fit.domain.member.dto.AuthTokens;
 import yung.dongnae_fit.domain.member.dto.LoginResponse;
 import yung.dongnae_fit.domain.member.entity.Member;
 import yung.dongnae_fit.domain.member.repository.MemberRepository;
+import yung.dongnae_fit.global.RequestScopedStorage;
 
 import java.util.HashMap;
 
@@ -34,6 +35,7 @@ public class KakaoService {
 
     private final MemberRepository memberRepository;
     private final AuthTokensGenerator authTokensGenerator;
+    private final RequestScopedStorage requestScopedStorage;
 
 
     public LoginResponse KakaoLogin(String code) {
@@ -141,6 +143,9 @@ public class KakaoService {
             member.setRefreshToken(token.getRefreshToken());
             onboard = false;
         }
+
+        requestScopedStorage.setKakaoId(kakaoId);
+
         //토큰 생성
         return new LoginResponse(kakaoId,token,onboard);
     }

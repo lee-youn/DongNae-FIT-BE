@@ -2,25 +2,33 @@ package yung.dongnae_fit.domain.post.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import yung.dongnae_fit.domain.facility.dto.FacilitiesResponseDTO;
+import yung.dongnae_fit.domain.member.service.auth.JwtTokenProvider;
 import yung.dongnae_fit.domain.post.dto.*;
 import yung.dongnae_fit.domain.post.service.PostLikeService;
 import yung.dongnae_fit.domain.post.service.PostSaveService;
 import yung.dongnae_fit.domain.post.service.PostService;
+import yung.dongnae_fit.global.RequestScopedStorage;
 import yung.dongnae_fit.global.dto.ResponseDTO;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@Log4j2
 public class PostController {
 
     private final PostService postService;
     private final PostLikeService postLikeService;
     private final PostSaveService postSaveService;
+    private final RequestScopedStorage requestScopedStorage;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/auth/posts")
     public ResponseEntity<?> postContent(@RequestBody PostRequestDTO postRequestDTO) {
@@ -67,7 +75,19 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public ResponseEntity<?> getPost(@PathVariable("postId") Long postId) {
+    public ResponseEntity<?> getPost(@PathVariable("postId") Long postId
+            ,@RequestHeader(value = "Authorization", required = false) String token) {
+
+        if (token != null) {
+            String accessToken = token.substring(7);
+            log.info("Access Token: " + accessToken);
+            Map<String, Object> claims = jwtTokenProvider.validateToken(accessToken).getBody();
+            log.info("Token validation completed. Claims: " + claims);
+
+            String kakaoId = (String) claims.get("sub");
+            requestScopedStorage.setKakaoId(kakaoId);
+        }
+
         PostContentResponseDTO postContentResponseDTO = postService.getCotent(postId);
         ResponseDTO<?> responseDTO = ResponseDTO.ok("해당 게시글 내용이 조회되었습니다.", postContentResponseDTO);
         return ResponseEntity.ok(responseDTO);

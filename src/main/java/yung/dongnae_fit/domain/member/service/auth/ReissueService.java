@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 import yung.dongnae_fit.domain.member.dto.AuthTokens;
 import yung.dongnae_fit.domain.member.entity.Member;
 import yung.dongnae_fit.domain.member.repository.MemberRepository;
+import yung.dongnae_fit.global.RequestScopedStorage;
 
 import java.util.Date;
 
@@ -19,6 +20,7 @@ public class ReissueService {
 
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider; // JWT 관련 로직 처리 클래스
+    private final RequestScopedStorage requestScopedStorage;
 
     @Value("${jwt.access.expiration}")
     private long ACCESS_TOKEN_EXPIRE_TIME;	//1시간
@@ -35,6 +37,7 @@ public class ReissueService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 회원이 존재하지 않습니다."));
 
         String kakaoId = member.getKakaoId();
+        requestScopedStorage.setKakaoId(kakaoId);
 
         long now = (new Date()).getTime();
         Date accessTokenExpiredAt = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);

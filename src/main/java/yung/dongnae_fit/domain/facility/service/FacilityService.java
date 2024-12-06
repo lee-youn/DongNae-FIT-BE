@@ -27,39 +27,7 @@ public class FacilityService {
 
     @Transactional
     public List<FacilitiesResponseDTO> findFacilities(String type, String search) {
-        String kakaoId = requestScopedStorage.getKakaoId();
-        Optional<Member> member = memberRepository.findByKakaoId(kakaoId);
 
-        if (member.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다. Kakao ID: " + kakaoId);
-        }
-
-        Member memberData = member.get();
-        double latitude = memberData.getLatitude();
-        double longitude = memberData.getLongitude();
-        double radius = 2;  // 기본 반경 1.5km
-        String province = memberData.getProvince();
-        String district = memberData.getDistrict();
-
-        List<Object[]> rawResult;
-
-        if (type != null && search != null) {
-            rawResult = facilityRepository.findByFilterAndNameContainingWithinRadius(type, search, latitude, longitude, radius, province, district);
-        }
-        else if (type != null) {
-            rawResult = facilityRepository.findByTypeWithinRadius(type, latitude, longitude, radius, province, district);
-        }
-        else if (search != null) {
-            rawResult = facilityRepository.findBySearchWithinRadius(search, latitude, longitude, radius, province, district);
-        }
-        else {
-            rawResult =facilityRepository.findFacilitiesWithinRadius(latitude, longitude, radius, province, district);
-        }
-
-        return convertToFacilityDTOList(rawResult);
-    }
-
-    public List<FacilitiesResponseDTO> nonLoginfindFacilities(String type, String search) {
         double latitude = 37.5178;
         double longitude = 127.0474;
         double radius = 2;  // 기본 반경 2km
@@ -67,6 +35,23 @@ public class FacilityService {
         String district = "강남구";
 
         List<Object[]> rawResult;
+
+        if (requestScopedStorage.getKakaoId() == null) {
+            log.info("없음");
+        }
+
+        if (requestScopedStorage.getKakaoId() != null) {
+            String kakaoId = requestScopedStorage.getKakaoId();
+
+            Member member = memberRepository.findByKakaoId(kakaoId)
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다. Kakao ID: " + kakaoId));
+
+            latitude = member.getLatitude();
+            longitude = member.getLongitude();
+            province = member.getProvince();
+            district = member.getDistrict();
+        }
 
         if (type != null && search != null) {
             rawResult = facilityRepository.findByFilterAndNameContainingWithinRadius(type, search, latitude, longitude, radius, province, district);
