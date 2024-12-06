@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import yung.dongnae_fit.domain.member.dto.AuthTokens;
+import yung.dongnae_fit.domain.member.dto.CheckNameDTO;
 import yung.dongnae_fit.domain.member.dto.LoginResponse;
 import yung.dongnae_fit.domain.member.dto.MemberCreateDTO;
 import yung.dongnae_fit.domain.member.service.MemberService;
@@ -53,8 +54,8 @@ public class MemberController {
     }
 
     @GetMapping("/auth/member/check")
-    public ResponseEntity<?> checkMember(@RequestParam String name){
-        boolean check = memberService.checkName(name);
+    public ResponseEntity<?> checkMember(@RequestParam CheckNameDTO checkNameDTO){
+        boolean check = memberService.checkName(checkNameDTO.getName());
         if(check){
             ResponseDTO<?> responseDTO = ResponseDTO.ok("중복되지 않습니다.");
             return ResponseEntity.status(200).body(responseDTO);

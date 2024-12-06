@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import yung.dongnae_fit.domain.member.entity.Member;
 import yung.dongnae_fit.domain.mypage.dto.MypageGetResponseDTO;
+import yung.dongnae_fit.domain.mypage.dto.MypageNameRequestDTO;
+import yung.dongnae_fit.domain.mypage.dto.MypageProfileReuqestDTO;
 import yung.dongnae_fit.domain.mypage.dto.MypageRegionDTO;
 import yung.dongnae_fit.domain.mypage.service.MypageService;
 import yung.dongnae_fit.global.dto.ResponseDTO;
@@ -37,16 +39,16 @@ public class MypageController {
 
 
     @PutMapping("/name")
-    public ResponseEntity<?> updateName(@RequestBody String name) {
-        mypageService.updateName(name);
+    public ResponseEntity<?> updateName(@RequestBody MypageNameRequestDTO mypageNameRequestDTO) {
+        mypageService.updateName(mypageNameRequestDTO.getName());
         MypageGetResponseDTO mypageGetResponseDTO = mypageService.getMember();
         ResponseDTO<?> responseDTO = ResponseDTO.ok("회원정보가 수정되었습니다.", mypageGetResponseDTO);
         return ResponseEntity.ok(responseDTO);
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<?> updateProfile(@RequestBody MultipartFile profile) throws IOException {
-        mypageService.uploadProfile(profile);
+    public ResponseEntity<?> updateProfile(@RequestBody MypageProfileReuqestDTO mypageProfileReuqestDTO) throws IOException {
+        mypageService.uploadProfile(mypageProfileReuqestDTO.getProfile());
         MypageGetResponseDTO mypageGetResponseDTO = mypageService.getMember();
         ResponseDTO<?> responseDTO = ResponseDTO.ok("회원정보가 수정되었습니다.", mypageGetResponseDTO);
         return ResponseEntity.ok(responseDTO);
