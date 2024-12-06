@@ -10,7 +10,7 @@ import yung.dongnae_fit.global.dto.ResponseDTO;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/posts")
+@RequestMapping("/auth/posts")
 public class PostCommentController {
 
     private final PostCommentService postCommentService;

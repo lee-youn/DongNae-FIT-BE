@@ -144,8 +144,6 @@ public class KakaoService {
             onboard = false;
         }
 
-        requestScopedStorage.setKakaoId(kakaoId);
-
         //토큰 생성
         return new LoginResponse(kakaoId,token,onboard);
     }

@@ -37,7 +37,6 @@ public class ReissueService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 회원이 존재하지 않습니다."));
 
         String kakaoId = member.getKakaoId();
-        requestScopedStorage.setKakaoId(kakaoId);
 
         long now = (new Date()).getTime();
         Date accessTokenExpiredAt = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
