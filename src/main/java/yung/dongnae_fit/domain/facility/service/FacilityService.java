@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import yung.dongnae_fit.domain.facility.dto.FacilitiesResponseDTO;
 import yung.dongnae_fit.domain.facility.repository.FacilityRepository;
@@ -24,6 +25,7 @@ public class FacilityService {
     private final MemberRepository memberRepository;
     private final RequestScopedStorage requestScopedStorage;
 
+    @Transactional
     public List<FacilitiesResponseDTO> findFacilities(String type, String search) {
         String kakaoId = requestScopedStorage.getKakaoId();
         Optional<Member> member = memberRepository.findByKakaoId(kakaoId);
@@ -38,6 +40,31 @@ public class FacilityService {
         double radius = 2;  // 기본 반경 1.5km
         String province = memberData.getProvince();
         String district = memberData.getDistrict();
+
+        List<Object[]> rawResult;
+
+        if (type != null && search != null) {
+            rawResult = facilityRepository.findByFilterAndNameContainingWithinRadius(type, search, latitude, longitude, radius, province, district);
+        }
+        else if (type != null) {
+            rawResult = facilityRepository.findByTypeWithinRadius(type, latitude, longitude, radius, province, district);
+        }
+        else if (search != null) {
+            rawResult = facilityRepository.findBySearchWithinRadius(search, latitude, longitude, radius, province, district);
+        }
+        else {
+            rawResult =facilityRepository.findFacilitiesWithinRadius(latitude, longitude, radius, province, district);
+        }
+
+        return convertToFacilityDTOList(rawResult);
+    }
+
+    public List<FacilitiesResponseDTO> nonLoginfindFacilities(String type, String search) {
+        double latitude = 37.5178;
+        double longitude = 127.0474;
+        double radius = 2;  // 기본 반경 2km
+        String province = "서울특별시";
+        String district = "강남구";
 
         List<Object[]> rawResult;
 

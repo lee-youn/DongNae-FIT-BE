@@ -20,14 +20,13 @@ import java.util.NoSuchElementException;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/member")
 public class MemberController {
 
     private final KakaoService kakaoService;
     private final ReissueService reissueService;
     private final MemberService memberService;
 
-    @GetMapping("/kakao")
+    @GetMapping("/member/kakao")
     public ResponseEntity<LoginResponse> kakaoLogin(@RequestParam String code){
         try{
             return ResponseEntity.ok(kakaoService.KakaoLogin(code));
@@ -36,7 +35,7 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/refresh")
+    @GetMapping("/member/refresh")
     public ResponseEntity<AuthTokens> reissueAccessToken(@RequestParam String refreshToken){
         try{
             return ResponseEntity.ok(reissueService.ReissueToken(refreshToken));
@@ -45,7 +44,7 @@ public class MemberController {
         }
     }
 
-    @PostMapping("/onboard")
+    @PostMapping("/auth/member/onboard")
     public ResponseEntity<?> onboardMember(@Valid @RequestBody MemberCreateDTO memberCreateDTO){
         memberService.makeMember(memberCreateDTO);
         ResponseDTO<?> responseDTO = ResponseDTO.created("등록되었습니다.");
@@ -53,7 +52,7 @@ public class MemberController {
 
     }
 
-    @GetMapping("/check")
+    @GetMapping("/auth/member/check")
     public ResponseEntity<?> checkMember(@RequestParam String name){
         boolean check = memberService.checkName(name);
         if(check){

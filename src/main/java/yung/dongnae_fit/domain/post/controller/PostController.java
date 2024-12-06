@@ -19,21 +19,20 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/posts")
 public class PostController {
 
     private final PostService postService;
     private final PostLikeService postLikeService;
     private final PostSaveService postSaveService;
 
-    @PostMapping
+    @PostMapping("/auth/posts")
     public ResponseEntity<?> postContent(@RequestBody PostRequestDTO postRequestDTO) {
         PostResponseDTO postResponseDTO = postService.postCotent(postRequestDTO);
         ResponseDTO<?> responseDTO = ResponseDTO.ok("작성되었습니다.", postResponseDTO);
         return ResponseEntity.ok(responseDTO);
     }
 
-    @PostMapping("/{postId}/image")
+    @PostMapping("/auth/posts/{postId}/image")
     public ResponseEntity<?> postImage(@PathVariable("postId") Long postId,
                                        @RequestBody PostImageRequestDTO postImageRequestDTO) throws IOException
     {
@@ -42,28 +41,28 @@ public class PostController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    @GetMapping
+    @GetMapping("/posts")
     public ResponseEntity<?> getAllPosts(@RequestParam(required = false) String search) {
         List<PostListResponseDTO> postListResponseDTOList = postService.getPostList(search);
         ResponseDTO<?> responseDTO = ResponseDTO.ok("커뮤니티 목록이 조회되었습니다.", postListResponseDTOList);
         return ResponseEntity.ok(responseDTO);
     }
 
-    @DeleteMapping("/{postId}")
+    @DeleteMapping("/auth/posts/{postId}")
     public ResponseEntity<?> deletePost(@PathVariable("postId") Long postId) throws IOException {
         postService.deletePost(postId);
         ResponseDTO<?> responseDTO = ResponseDTO.ok("해당 게시글이 삭제되었습니다.");
         return ResponseEntity.ok(responseDTO);
     }
 
-    @PutMapping("/{postId}/like")
+    @PutMapping("/auth/posts/{postId}/like")
     public ResponseEntity<?> likePost(@PathVariable("postId") Long postId) {
         postLikeService.toggleLike(postId);
         ResponseDTO<?> responseDTO = ResponseDTO.ok("요청이 성공하였습니다.");
         return ResponseEntity.ok(responseDTO);
     }
 
-    @PutMapping("/{postId}/save")
+    @PutMapping("/auth/posts/{postId}/save")
     public ResponseEntity<?> savePost(@PathVariable("postId") Long postId) {
         postSaveService.toggleSave(postId);
         ResponseDTO<?> responseDTO = ResponseDTO.ok("요청이 성공하였습니다.");

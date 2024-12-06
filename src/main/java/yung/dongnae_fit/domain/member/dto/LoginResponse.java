@@ -8,9 +8,11 @@ import lombok.NoArgsConstructor;
 public class LoginResponse {
     private String id;
     private AuthTokens token;
+    private boolean onboard;
 
-    public LoginResponse(String id, AuthTokens token) {
+    public LoginResponse(String id, AuthTokens token, boolean onboard) {
         this.id = id;
         this.token = token;
+        this.onboard = onboard;
     }
 }

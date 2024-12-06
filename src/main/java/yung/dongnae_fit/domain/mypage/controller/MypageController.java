@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/mypage")
+@RequestMapping("/auth/mypage")
 public class MypageController {
 
     private final MypageService mypageService;

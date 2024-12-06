@@ -15,16 +15,24 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/facilities")
 public class FacilityController {
 
     private final FacilityService facilityService;
 
-    @GetMapping
+    @GetMapping("/auth/facilities")
     public ResponseEntity<?> findFacilities(@RequestParam(required = false) String type
                                             ,@RequestParam(required = false) String search) {
 
         List<FacilitiesResponseDTO> facilities = facilityService.findFacilities(type, search);
+        ResponseDTO<?> responseDTO = ResponseDTO.ok("주변체육시설 목록이 조회되었습니다.", facilities);
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @GetMapping("/facilities")
+    public ResponseEntity<?> nonLoginfindFacilities(@RequestParam(required = false) String type
+            ,@RequestParam(required = false) String search) {
+
+        List<FacilitiesResponseDTO> facilities = facilityService.nonLoginfindFacilities(type, search);
         ResponseDTO<?> responseDTO = ResponseDTO.ok("주변체육시설 목록이 조회되었습니다.", facilities);
         return ResponseEntity.ok(responseDTO);
     }

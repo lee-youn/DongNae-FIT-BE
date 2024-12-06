@@ -38,8 +38,6 @@ public class KakaoService {
 
     public LoginResponse KakaoLogin(String code) {
 
-        System.out.print("여기서 옴?");
-
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getAccessToken(code);
 
@@ -130,6 +128,7 @@ public class KakaoService {
 
         Member member = memberRepository.findByKakaoId(kakaoId).orElse(null);
         AuthTokens token= authTokensGenerator.generate(kakaoId.toString());
+        boolean onboard;
 
         if (member == null) {    //회원가입
             member = Member.builder()
@@ -137,11 +136,13 @@ public class KakaoService {
                     .refreshToken(token.getRefreshToken())
                     .build();
             memberRepository.save(member);
+            onboard = true;
         } else {
             member.setRefreshToken(token.getRefreshToken());
+            onboard = false;
         }
         //토큰 생성
-        return new LoginResponse(kakaoId,token);
+        return new LoginResponse(kakaoId,token,onboard);
     }
 
 
