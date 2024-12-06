@@ -3,8 +3,8 @@ package yung.dongnae_fit.domain.post.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import yung.dongnae_fit.domain.member.entity.Member;
-import yung.dongnae_fit.domain.memberComment.entity.MemberComment;
 import yung.dongnae_fit.domain.postLike.entity.PostLike;
 import yung.dongnae_fit.domain.postSave.entity.PostSave;
 
@@ -17,6 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class Post {
 
     @Id

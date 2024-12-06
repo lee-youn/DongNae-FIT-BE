@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import yung.dongnae_fit.domain.post.dto.PostImageRequestDTO;
 import yung.dongnae_fit.domain.post.dto.PostListResponseDTO;
 import yung.dongnae_fit.domain.post.dto.PostRequestDTO;
 import yung.dongnae_fit.domain.post.dto.PostResponseDTO;
@@ -34,9 +35,9 @@ public class PostController {
 
     @PostMapping("/{postId}/image")
     public ResponseEntity<?> postImage(@PathVariable("postId") Long postId,
-                                       @RequestBody MultipartFile postImage) throws IOException
+                                       @RequestBody PostImageRequestDTO postImageRequestDTO) throws IOException
     {
-        PostResponseDTO postResponseDTO = postService.uploadPostImage(postId, postImage);
+        PostResponseDTO postResponseDTO = postService.uploadPostImage(postId, postImageRequestDTO.getPostImage());
         ResponseDTO<?> responseDTO = ResponseDTO.ok("작성되었습니다.", postResponseDTO);
         return ResponseEntity.ok(responseDTO);
     }
