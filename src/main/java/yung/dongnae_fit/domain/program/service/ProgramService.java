@@ -8,11 +8,14 @@ import org.springframework.web.server.ResponseStatusException;
 import yung.dongnae_fit.domain.member.entity.Member;
 import yung.dongnae_fit.domain.member.repository.MemberRepository;
 import yung.dongnae_fit.domain.post.entity.Post;
+import yung.dongnae_fit.domain.postSave.entity.PostSave;
 import yung.dongnae_fit.domain.program.dto.ProgramDataDTO;
 import yung.dongnae_fit.domain.program.entity.Program;
 import yung.dongnae_fit.domain.program.repository.ProgramRepository;
 import yung.dongnae_fit.domain.programFacility.entity.ProgramFacility;
 import yung.dongnae_fit.domain.programFacility.repository.ProgramFacilityRepository;
+import yung.dongnae_fit.domain.programSave.entity.ProgramSave;
+import yung.dongnae_fit.domain.programSave.repository.ProgramSaveRepository;
 import yung.dongnae_fit.global.RequestScopedStorage;
 
 import java.util.ArrayList;
@@ -26,6 +29,7 @@ public class ProgramService {
     private final ProgramFacilityRepository programFacilityRepository;
     private final MemberRepository memberRepository;
     private final RequestScopedStorage requestScopedStorage;
+    private final ProgramSaveRepository programSaveRepository;
 
     @Transactional
     public List<ProgramDataDTO> getPrograms(Long min, Long max, String search) {
@@ -76,6 +80,29 @@ public class ProgramService {
         }
 
         return programDataList;
+    }
+
+    @Transactional
+    public void toggleSave(Long programId) {
+        String kakaoId = requestScopedStorage.getKakaoId();
+        Member member = memberRepository.findByKakaoId(kakaoId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다. Kakao ID: " + kakaoId));
+        Program program = programRepository.findById(programId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "프로그램을 찾을 수 없습니다."));
+
+        programSaveRepository.findByProgramAndMember(program, member)
+                .ifPresentOrElse(
+                        programSave -> programSaveRepository.deleteAllByProgramAndMember(program, member),
+                        () -> {
+                            ProgramSave newProgramSave = ProgramSave.builder()
+                                    .program(program)
+                                    .member(member)
+                                    .build();
+                            programSaveRepository.save(newProgramSave);
+                        });
+
     }
 
 

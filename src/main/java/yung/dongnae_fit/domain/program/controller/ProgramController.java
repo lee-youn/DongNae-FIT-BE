@@ -44,4 +44,13 @@ public class ProgramController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    @PutMapping("/auth/programs/{programId}/save")
+    public ResponseEntity<?> saveProgram(@PathVariable Long programId) {
+        programService.toggleSave(programId);
+        ResponseDTO<?> responseDTO = ResponseDTO.ok("저장되었습니다.");
+        return ResponseEntity.ok(responseDTO);
+    }
+
+
+
 }
