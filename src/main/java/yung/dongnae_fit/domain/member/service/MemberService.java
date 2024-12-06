@@ -36,7 +36,6 @@ public class MemberService {
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다. Kakao ID: " + kakaoId);
         }
-        return;
     }
 
     public boolean checkName(String name) {

@@ -33,8 +33,6 @@ public class Member {
 
     private String kakaoId;
 
-    private String profileImage;
-
     private String refreshToken;
 
 
