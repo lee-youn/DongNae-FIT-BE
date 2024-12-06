@@ -24,7 +24,7 @@ public class PostComment {
 
     private String detail;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
 

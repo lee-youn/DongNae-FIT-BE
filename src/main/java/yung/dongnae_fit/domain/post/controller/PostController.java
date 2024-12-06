@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import yung.dongnae_fit.domain.post.dto.PostImageRequestDTO;
-import yung.dongnae_fit.domain.post.dto.PostListResponseDTO;
-import yung.dongnae_fit.domain.post.dto.PostRequestDTO;
-import yung.dongnae_fit.domain.post.dto.PostResponseDTO;
+import yung.dongnae_fit.domain.post.dto.*;
 import yung.dongnae_fit.domain.post.service.PostLikeService;
 import yung.dongnae_fit.domain.post.service.PostSaveService;
 import yung.dongnae_fit.domain.post.service.PostService;
@@ -66,6 +63,13 @@ public class PostController {
     public ResponseEntity<?> savePost(@PathVariable("postId") Long postId) {
         postSaveService.toggleSave(postId);
         ResponseDTO<?> responseDTO = ResponseDTO.ok("요청이 성공하였습니다.");
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @GetMapping("/posts/{postId}")
+    public ResponseEntity<?> getPost(@PathVariable("postId") Long postId) {
+        PostContentResponseDTO postContentResponseDTO = postService.getCotent(postId);
+        ResponseDTO<?> responseDTO = ResponseDTO.ok("해당 게시글 내용이 조회되었습니다.", postContentResponseDTO);
         return ResponseEntity.ok(responseDTO);
     }
 }

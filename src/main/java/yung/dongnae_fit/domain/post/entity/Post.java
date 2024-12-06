@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import yung.dongnae_fit.domain.member.entity.Member;
+import yung.dongnae_fit.domain.postComment.entity.PostComment;
 import yung.dongnae_fit.domain.postLike.entity.PostLike;
 import yung.dongnae_fit.domain.postSave.entity.PostSave;
 
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -42,6 +44,9 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<PostSave> postSaves = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post")
+    private List<PostComment> postComment = new ArrayList<>();
+
     @Builder
     public Post(String image, String title, String detail, Member member) {
         this.image = image;
@@ -49,5 +54,4 @@ public class Post {
         this.detail = detail;
         this.member = member;
     }
-
 }

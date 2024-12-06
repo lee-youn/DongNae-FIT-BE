@@ -9,11 +9,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import yung.dongnae_fit.domain.member.entity.Member;
 import yung.dongnae_fit.domain.member.repository.MemberRepository;
+import yung.dongnae_fit.domain.post.dto.PostContentResponseDTO;
 import yung.dongnae_fit.domain.post.dto.PostListResponseDTO;
 import yung.dongnae_fit.domain.post.dto.PostRequestDTO;
 import yung.dongnae_fit.domain.post.dto.PostResponseDTO;
 import yung.dongnae_fit.domain.post.entity.Post;
 import yung.dongnae_fit.domain.post.repository.PostRepository;
+import yung.dongnae_fit.domain.postComment.dto.CommentDataDTO;
 import yung.dongnae_fit.global.RequestScopedStorage;
 import yung.dongnae_fit.global.service.S3Uploader;
 
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Log4j2
@@ -95,5 +98,38 @@ public class PostService {
             s3Uploader.delete(post.getImage());
             postRepository.deleteByIdAndMember(postId, member);
         }
+    }
+
+
+    @Transactional
+    public PostContentResponseDTO getCotent(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다."));
+        boolean postLikeStatus = false;
+        boolean postSaveStatus = false;
+
+        if (requestScopedStorage.getKakaoId() != null) {
+            String kakaoId = requestScopedStorage.getKakaoId();
+            Member member = memberRepository.findByKakaoId(kakaoId)
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND, "회원을 찾을 수 없습니다."));
+
+            postLikeStatus = post.getPostLikes().stream()
+                    .anyMatch(like -> like.getMember().equals(member));
+            postSaveStatus = post.getPostSaves().stream()
+                    .anyMatch(save -> save.getMember().equals(member));
+        }
+
+        List<CommentDataDTO> commentDataDTOs = post.getPostComment().stream()
+                .map(CommentDataDTO::new)
+                .collect(Collectors.toList());
+
+        return PostContentResponseDTO.builder()
+                .post(post)
+                .postLikeStatus(postLikeStatus)
+                .postSaveStatus(postSaveStatus)
+                .comments(commentDataDTOs)
+                .build();
     }
 }
