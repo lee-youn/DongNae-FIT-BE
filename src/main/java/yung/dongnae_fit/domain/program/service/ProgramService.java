@@ -10,6 +10,9 @@ import yung.dongnae_fit.domain.member.repository.MemberRepository;
 import yung.dongnae_fit.domain.post.entity.Post;
 import yung.dongnae_fit.domain.postSave.entity.PostSave;
 import yung.dongnae_fit.domain.program.dto.ProgramDataDTO;
+import yung.dongnae_fit.domain.program.dto.ProgramDetailDTO;
+import yung.dongnae_fit.domain.program.dto.ProgramDetailResponseDTO;
+import yung.dongnae_fit.domain.program.dto.ReviewDataDTO;
 import yung.dongnae_fit.domain.program.entity.Program;
 import yung.dongnae_fit.domain.program.repository.ProgramRepository;
 import yung.dongnae_fit.domain.programFacility.entity.ProgramFacility;
@@ -103,6 +106,34 @@ public class ProgramService {
                             programSaveRepository.save(newProgramSave);
                         });
 
+    }
+
+    @Transactional
+    public ProgramDetailResponseDTO getProgramDetail(Long programId) {
+        Program program = programRepository.findById(programId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "프로그램을 찾을 수 없습니다."));
+
+        boolean programSaveStatus = false;
+
+        if (requestScopedStorage.getKakaoId() != null) {
+            String kakaoId = requestScopedStorage.getKakaoId();
+
+            Member member = memberRepository.findByKakaoId(kakaoId)
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다. Kakao ID: " + kakaoId));
+            programSaveStatus = programSaveRepository.findByProgramAndMember(program, member)
+                    .isPresent();
+        }
+
+        List<ReviewDataDTO> reviewDataDTOS = program.getReviews().stream()
+                .map(ReviewDataDTO::new)
+                .toList();
+        ProgramFacility programFacility = programFacilityRepository.findById(program.getFacilityId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "프로그램 시설을 찾을 수 없습니다."));
+
+        return new ProgramDetailResponseDTO(programFacility, new ProgramDetailDTO(program,programSaveStatus),reviewDataDTOS);
     }
 
 

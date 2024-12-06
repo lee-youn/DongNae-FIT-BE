@@ -8,7 +8,7 @@ import yung.dongnae_fit.domain.programSave.entity.ProgramSave;
 import java.util.Optional;
 
 public interface ProgramSaveRepository extends JpaRepository<ProgramSave, Long> {
-    Optional<Object> findByProgramAndMember(Program program, Member member);
+    Optional<ProgramSave> findByProgramAndMember(Program program, Member member);
 
     void deleteAllByProgramAndMember(Program program, Member member);
 }

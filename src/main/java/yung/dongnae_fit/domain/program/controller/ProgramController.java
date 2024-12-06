@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import yung.dongnae_fit.domain.member.service.auth.JwtTokenProvider;
 import yung.dongnae_fit.domain.program.dto.ProgramDataDTO;
+import yung.dongnae_fit.domain.program.dto.ProgramDetailResponseDTO;
 import yung.dongnae_fit.domain.program.service.ProgramService;
 import yung.dongnae_fit.global.RequestScopedStorage;
 import yung.dongnae_fit.global.dto.ResponseDTO;
@@ -51,6 +52,24 @@ public class ProgramController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    @GetMapping("/programs/{programId}")
+    public ResponseEntity<?> getProgram(@PathVariable Long programId,
+                                        @RequestHeader(value = "Authorization", required = false) String token) {
+
+        if (token != null) {
+            String accessToken = token.substring(7);
+            log.info("Access Token: " + accessToken);
+            Map<String, Object> claims = jwtTokenProvider.validateToken(accessToken).getBody();
+            log.info("Token validation completed. Claims: " + claims);
+
+            String kakaoId = (String) claims.get("sub");
+            requestScopedStorage.setKakaoId(kakaoId);
+        }
+
+        ProgramDetailResponseDTO programDetailResponseDTO = programService.getProgramDetail(programId);
+        ResponseDTO<?> responseDTO = ResponseDTO.ok("스포츠강좌 상세내용이 조회되었습니다.", programDetailResponseDTO);
+        return ResponseEntity.ok(responseDTO);
+    }
 
 
 }
