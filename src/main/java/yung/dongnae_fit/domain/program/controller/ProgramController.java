@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProgramController {
 
-    @GetMapping("/auth/programs")
-    public ResponseEntity<?> getPrograms(@RequestParam(required = false) Long min,
-                                         @RequestParam(required = false) Long max,
-                                         @RequestParam(required = false) String search) {
-
-    }
+//    @GetMapping("/auth/programs")
+//    public ResponseEntity<?> getPrograms(@RequestParam(required = false) Long min,
+//                                         @RequestParam(required = false) Long max,
+//                                         @RequestParam(required = false) String search) {
+//
+//    }
 }

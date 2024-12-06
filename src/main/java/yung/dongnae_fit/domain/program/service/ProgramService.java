@@ -23,33 +23,33 @@ public class ProgramService {
     private final MemberRepository memberRepository;
     private final RequestScopedStorage requestScopedStorage;
 
-    @Transactional
-    public List<ProgramDataDTO> getPrograms(Long min, Long max, String search) {
-        String kakaoId = requestScopedStorage.getKakaoId();
-        Member member = memberRepository.findByKakaoId(kakaoId)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다. Kakao ID: " + kakaoId));
-
-        double latitude = member.getLatitude();
-        double longitude = member.getLongitude();
-        double radius = 2;
-        String province = member.getProvince();
-        String district = member.getDistrict();
-
-        List<Object[]> rawResult;
-        if (min != null && max != null && search != null) {
-
-        }
-        else if (min == null && max == null) {
-
-        }
-        else if (search == null) {
-
-        }
-        else {
-
-        }
-    }
+//    @Transactional
+//    public List<ProgramDataDTO> getPrograms(Long min, Long max, String search) {
+//        String kakaoId = requestScopedStorage.getKakaoId();
+//        Member member = memberRepository.findByKakaoId(kakaoId)
+//                .orElseThrow(() -> new ResponseStatusException(
+//                        HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다. Kakao ID: " + kakaoId));
+//
+//        double latitude = member.getLatitude();
+//        double longitude = member.getLongitude();
+//        double radius = 2;
+//        String province = member.getProvince();
+//        String district = member.getDistrict();
+//
+//        List<Object[]> rawResult;
+//        if (min != null && max != null && search != null) {
+//
+//        }
+//        else if (min == null && max == null) {
+//
+//        }
+//        else if (search == null) {
+//
+//        }
+//        else {
+//
+//        }
+//    }
 
 
 }
