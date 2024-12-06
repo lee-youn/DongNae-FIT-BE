@@ -53,8 +53,8 @@ public class MemberController {
 
     }
 
-    @GetMapping("/ckeck")
-    public ResponseEntity<?> ckeckMember(@RequestParam String name){
+    @GetMapping("/check")
+    public ResponseEntity<?> checkMember(@RequestParam String name){
         boolean check = memberService.checkName(name);
         if(check){
             ResponseDTO<?> responseDTO = ResponseDTO.ok("중복되지 않습니다.");
