@@ -36,10 +36,6 @@ public class FacilityService {
 
         List<Object[]> rawResult;
 
-        if (requestScopedStorage.getKakaoId() == null) {
-            log.info("없음");
-        }
-
         if (requestScopedStorage.getKakaoId() != null) {
             String kakaoId = requestScopedStorage.getKakaoId();
 
