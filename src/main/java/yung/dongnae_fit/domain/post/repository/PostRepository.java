@@ -17,4 +17,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByTitleOrDetailLike(String search);
 
     void deleteByIdAndMember(Long postId, Member member);
+
+    List<Post> findByMember(Member member);
 }

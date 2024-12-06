@@ -6,9 +6,12 @@ import yung.dongnae_fit.domain.member.entity.Member;
 import yung.dongnae_fit.domain.post.entity.Post;
 import yung.dongnae_fit.domain.postComment.entity.PostComment;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface PostCommentRepository extends JpaRepository<PostComment, Long> {
     Optional<PostComment> findByIdAndPostAndMember(Long commentId, Post post, Member member);
+
+    List<PostComment> findByMember(Member member);
 }
