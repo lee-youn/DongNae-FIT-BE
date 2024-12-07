@@ -85,7 +85,7 @@ public class MypageController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    @GetMapping("/auth/mypage/posts/save")
+    @GetMapping("/posts/save")
     public ResponseEntity<?> getMypageSavedPost(){
         List<PostListResponseDTO> postListResponseDTOList = mypageService.getSavedPosts();
         ResponseDTO<?> responseDTO = ResponseDTO.ok("커뮤니티 목록이 조회되었습니다.", postListResponseDTOList);
