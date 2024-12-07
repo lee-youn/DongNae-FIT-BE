@@ -50,7 +50,7 @@ public class MypageController {
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<?> updateProfile(@RequestBody MypageProfileReuqestDTO mypageProfileReuqestDTO) throws IOException {
+    public ResponseEntity<?> updateProfile(@ModelAttribute MypageProfileReuqestDTO mypageProfileReuqestDTO) throws IOException {
         mypageService.uploadProfile(mypageProfileReuqestDTO.getProfile());
         MypageGetResponseDTO mypageGetResponseDTO = mypageService.getMember();
         ResponseDTO<?> responseDTO = ResponseDTO.ok("회원정보가 수정되었습니다.", mypageGetResponseDTO);

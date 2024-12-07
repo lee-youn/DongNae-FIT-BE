@@ -12,10 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 public class MainHomeDTO {
     private List<ProgramDataDTO> programData;
-    private List<PostListResponseDTO> postData;
+    private List<PostMemberListDTO> postData;
 
     @Builder
-    public MainHomeDTO(List<ProgramDataDTO> programData, List<PostListResponseDTO> postData) {
+    public MainHomeDTO(List<ProgramDataDTO> programData, List<PostMemberListDTO> postData) {
         this.programData = programData;
         this.postData = postData;
     }

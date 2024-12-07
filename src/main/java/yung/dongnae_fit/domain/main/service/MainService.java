@@ -11,6 +11,7 @@ import yung.dongnae_fit.domain.facility.entity.Facility;
 import yung.dongnae_fit.domain.facility.repository.FacilityRepository;
 import yung.dongnae_fit.domain.main.dto.MainHomeDTO;
 import yung.dongnae_fit.domain.main.dto.MainSearchDTO;
+import yung.dongnae_fit.domain.main.dto.PostMemberListDTO;
 import yung.dongnae_fit.domain.member.entity.Member;
 import yung.dongnae_fit.domain.member.repository.MemberRepository;
 import yung.dongnae_fit.domain.post.dto.PostListResponseDTO;
@@ -94,11 +95,11 @@ public class MainService {
 
         List<Post> posts = postRepository.findAllByOrderByLikesCountDesc();
         List<Post> firstTwoPosts = posts.size() > 4 ? posts.subList(0, 4) : posts;
-        List<PostListResponseDTO> postListResponseDTO = firstTwoPosts.stream()
-                .map(PostListResponseDTO::new)
+        List<PostMemberListDTO> postMemberListDTO = firstTwoPosts.stream()
+                .map(post -> new PostMemberListDTO(post, post.getMember()))
                 .toList();
 
-        return new MainHomeDTO(programDataList, postListResponseDTO);
+        return new MainHomeDTO(programDataList, postMemberListDTO);
     }
 
     @Transactional

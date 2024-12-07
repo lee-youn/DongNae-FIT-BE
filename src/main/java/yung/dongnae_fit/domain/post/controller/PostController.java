@@ -39,7 +39,7 @@ public class PostController {
 
     @PostMapping("/auth/posts/{postId}/image")
     public ResponseEntity<?> postImage(@PathVariable("postId") Long postId,
-                                       @RequestBody PostImageRequestDTO postImageRequestDTO) throws IOException
+                                       @ModelAttribute PostImageRequestDTO postImageRequestDTO) throws IOException
     {
         PostResponseDTO postResponseDTO = postService.uploadPostImage(postId, postImageRequestDTO.getPostImage());
         ResponseDTO<?> responseDTO = ResponseDTO.ok("작성되었습니다.", postResponseDTO);
