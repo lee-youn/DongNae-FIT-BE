@@ -57,28 +57,28 @@ public class MypageController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    @GetMapping("/auth/mypage/programs/save")
+    @GetMapping("/programs/save")
     public ResponseEntity<?> getMypageSavedProgram(){
         List<ProgramDataDTO> programDataDTOList = mypageService.getSavedPrograms();
         ResponseDTO<?> responseDTO = ResponseDTO.ok("스포츠강좌목록이 조회되었습니다.", programDataDTOList);
         return ResponseEntity.ok(responseDTO);
     }
 
-    @GetMapping("/auth/mypage/programs/review")
+    @GetMapping("/programs/review")
     public ResponseEntity<?> getMypageReviewedProgram(){
         List<ProgramDataDTO> programDataDTOList = mypageService.getReviewedPrograms();
         ResponseDTO<?> responseDTO = ResponseDTO.ok("스포츠강좌목록이 조회되었습니다.", programDataDTOList);
         return ResponseEntity.ok(responseDTO);
     }
 
-    @GetMapping("/auth/mypage/posts/post")
+    @GetMapping("/posts/post")
     public ResponseEntity<?> getMypagePostedPost(){
         List<PostListResponseDTO> postListResponseDTOList = mypageService.getPostedPosts();
         ResponseDTO<?> responseDTO = ResponseDTO.ok("커뮤니티 목록이 조회되었습니다.", postListResponseDTOList);
         return ResponseEntity.ok(responseDTO);
     }
 
-    @GetMapping("/auth/mypage/posts/comment")
+    @GetMapping("/posts/comment")
     public ResponseEntity<?> getMypageCommentedPost(){
         List<PostListResponseDTO> postListResponseDTOList = mypageService.getCommentedPosts();
         ResponseDTO<?> responseDTO = ResponseDTO.ok("커뮤니티 목록이 조회되었습니다.", postListResponseDTOList);
