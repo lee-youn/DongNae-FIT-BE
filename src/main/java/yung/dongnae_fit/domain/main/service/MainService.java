@@ -87,13 +87,13 @@ public class MainService {
             }
 
             // 최소 3개 프로그램이 채워지면 종료
-            if (programCount >= 3) {
+            if (programCount >= 5) {
                 break;
             }
         }
 
         List<Post> posts = postRepository.findAllByOrderByLikesCountDesc();
-        List<Post> firstTwoPosts = posts.size() > 2 ? posts.subList(0, 2) : posts;
+        List<Post> firstTwoPosts = posts.size() > 4 ? posts.subList(0, 4) : posts;
         List<PostListResponseDTO> postListResponseDTO = firstTwoPosts.stream()
                 .map(PostListResponseDTO::new)
                 .toList();
