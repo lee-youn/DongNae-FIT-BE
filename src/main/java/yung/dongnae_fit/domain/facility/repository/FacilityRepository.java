@@ -36,7 +36,7 @@ public interface FacilityRepository extends JpaRepository<Facility, Long> {
             "* sin(radians(f.latitude)))), 2) AS km " +
             "FROM facility f " +
             "WHERE f.province LIKE CONCAT('%', :province, '%') " +
-            "AND f.type LIKE CONCAT('%', :type, '%') " +
+            "AND f.filter LIKE CONCAT('%', :type, '%') " +
             "AND (LOWER(f.name) LIKE LOWER(CONCAT('%', :search, '%')) " +
             "OR LOWER(f.type) LIKE LOWER(CONCAT('%', :search, '%')) " +
             "OR LOWER(f.addr) LIKE LOWER(CONCAT('%', :search, '%'))) " +
@@ -57,7 +57,7 @@ public interface FacilityRepository extends JpaRepository<Facility, Long> {
             "* sin(radians(f.latitude)))), 2) AS km " +
             "FROM facility f " +
             "WHERE f.province LIKE CONCAT('%', :province, '%') " +
-            "AND f.type LIKE CONCAT('%', :type, '%') " +
+            "AND f.filter LIKE CONCAT('%', :type, '%') " +
             "HAVING km <= :radius " +
             "ORDER BY km", nativeQuery = true)
     List<Object[]> findByTypeWithinRadius(String type,

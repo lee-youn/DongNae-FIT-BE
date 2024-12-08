@@ -13,6 +13,7 @@ import yung.dongnae_fit.domain.member.repository.MemberRepository;
 import yung.dongnae_fit.global.RequestScopedStorage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,6 +70,7 @@ public class FacilityService {
         List<FacilitiesResponseDTO> facilityDTOList = new ArrayList<>();
 
         for (Object[] row : rawResult) {
+            log.info(Arrays.toString(row));
             Long facilityId = (Long) row[0]; // facilityId
             String facilityName = (String) row[1]; // facilityName
             String facilityType = (String) row[2]; // facilityType
