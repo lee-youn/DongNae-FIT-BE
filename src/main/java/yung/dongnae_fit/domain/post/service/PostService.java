@@ -2,6 +2,7 @@ package yung.dongnae_fit.domain.post.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,7 +77,7 @@ public class PostService {
         List<Post> postList;
 
         if (search == null) {
-            postList = postRepository.findAll();
+            postList = postRepository.findAll(Sort.by(Sort.Direction.DESC, "date"));
         } else {
             postList = postRepository.findByTitleOrDetailLike(search);
         }

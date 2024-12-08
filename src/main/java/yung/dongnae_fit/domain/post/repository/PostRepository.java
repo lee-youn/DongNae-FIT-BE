@@ -13,13 +13,13 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post, Long> {
     Optional<Post> findByIdAndMember(Long postId, Member member);
 
-    @Query("SELECT p FROM Post p WHERE p.title LIKE %:search% OR p.detail LIKE %:search%")
+    @Query("SELECT p FROM Post p WHERE p.title LIKE %:search% OR p.detail LIKE %:search% ORDER BY p.date DESC")
     List<Post> findByTitleOrDetailLike(String search);
 
     void deleteByIdAndMember(Long postId, Member member);
 
     List<Post> findByMember(Member member);
 
-    @Query("SELECT p FROM Post p ORDER BY SIZE(p.postLikes) + SIZE(p.postSaves) DESC")
+    @Query("SELECT p FROM Post p ORDER BY SIZE(p.postLikes) + SIZE(p.postSaves), p.date DESC")
     List<Post> findAllByOrderByLikesCountDesc();
 }
