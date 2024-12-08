@@ -30,6 +30,7 @@ public class Post {
     @CreatedDate
     private LocalDateTime date;
 
+    @Lob
     private String image;
     private String title;
     private String detail;
