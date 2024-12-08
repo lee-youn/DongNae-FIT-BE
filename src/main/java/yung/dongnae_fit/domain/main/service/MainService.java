@@ -45,7 +45,7 @@ public class MainService {
 
         double latitude = 37.5178;
         double longitude = 127.0474;
-        double radius = 2;  // 기본 반경 2km
+        double radius = 8;  // 기본 반경 2km
         String province = "서울특별시";
         String district = "강남구";
 
@@ -107,7 +107,7 @@ public class MainService {
 
         double latitude = 37.5178;
         double longitude = 127.0474;
-        double radius = 2;  // 기본 반경 2km
+        double radius = 8;  // 기본 반경 2km
         String province = "서울특별시";
         String district = "강남구";
 
