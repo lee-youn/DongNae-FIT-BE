@@ -67,7 +67,7 @@
 <table align="">
     <tr align="center">
         <td style="min-width: 150px;">
-            <a href="https://github.com/leerura">
+            <a href="https://github.com/JeongsuGil">
               <img src="https://github.com/JeongsuGil.png" width="120">
               <br />
               <b></b>
