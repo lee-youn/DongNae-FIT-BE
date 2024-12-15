@@ -38,3 +38,5 @@ out/
 
 !**/src/main/resources/config/
 /src/main/resources/config/**src/main/resources/config/secret.yaml
+# .gitignore 파일
+src/main/resources/config/secret.yaml
